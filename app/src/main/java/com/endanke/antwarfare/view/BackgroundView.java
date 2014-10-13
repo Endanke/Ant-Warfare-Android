@@ -35,7 +35,7 @@ public class BackgroundView extends View {
         canvas.drawPath(path, paint);
         paint.setColor(Color.GRAY);
         canvas.drawCircle(Globals.width/2, Globals.height/2, Globals.width/3, paint);
-        if (fingerDown) { 
+        if (fingerDown) {
             canvas.drawCircle(eventX, eventY, 20, paint);
         }
     }
