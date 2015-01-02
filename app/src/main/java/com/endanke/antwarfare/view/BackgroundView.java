@@ -16,10 +16,7 @@ import com.endanke.antwarfare.model.*;
 
 public class BackgroundView extends View {
     private Paint paint = new Paint();
-    private Path path = new Path();
-    private float eventX;
-    private float eventY;
-    private boolean fingerDown = false;
+    public float scale = 0;
 
     public BackgroundView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,38 +29,37 @@ public class BackgroundView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawPath(path, paint);
         paint.setColor(Color.GRAY);
-        canvas.drawCircle(Globals.width/2, Globals.height/2, Globals.width/3, paint);
-        if (fingerDown) {
-            canvas.drawCircle(eventX, eventY, 20, paint);
-        }
+
+        drawTriangle(canvas);
+
+        canvas.drawCircle(Globals.width / 2, Globals.height / 2, Globals.width / 3, paint);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(Globals.width/2, Globals.height/2, (float)((Globals.width/3)*((Math.sin(scale)+1.0)/2)), paint);
+        paint.setStyle(Paint.Style.STROKE);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        eventX = event.getX();
-        eventY = event.getY();
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                fingerDown = true;
-                path.moveTo(eventX, eventY);
-
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                path.lineTo(eventX, eventY);
-                break;
-            case MotionEvent.ACTION_UP:
-                fingerDown = false;
-                // nothing to do
-                break;
-            default:
-                return false;
+    private void drawTriangle(Canvas canvas){
+        Point a,b,c;
+        if(GameController.getInstance().position == 1){
+            a = new Point(0, (Globals.height / 2) - 50);
+            b = new Point(0, (Globals.height / 2) + 50);
+            c = new Point(20, Globals.height / 2);
+        }else{
+            a = new Point(Globals.width, (Globals.height / 2) - 50);
+            b = new Point(Globals.width, (Globals.height / 2) + 50);
+            c = new Point(Globals.width-20, Globals.height / 2);
         }
 
-        // Schedules a repaint.
-        invalidate();
-        return true;
+
+        Path path = new Path();
+        path.setFillType(Path.FillType.EVEN_ODD);
+        path.moveTo(b.x, b.y);
+        path.lineTo(c.x, c.y);
+        path.lineTo(a.x, a.y);
+        path.lineTo(b.x, b.y);
+        path.close();
+
+        canvas.drawPath(path, paint);
     }
 }

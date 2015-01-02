@@ -17,15 +17,17 @@ public class AntView extends View{
     private Ant ant;
     private Paint paint = new Paint();
     private Path path = new Path();
+    public int color;
     public int width, height;
 
-    public AntView(Context context, AttributeSet attrs, Ant ant) {
+    public AntView(Context context, AttributeSet attrs, int color, Ant ant) {
         super(context, attrs);
-        width = height = 30;
+        width = height = 50;
+        this.color = color;
 
         paint.setAntiAlias(true);
         paint.setStrokeWidth(6f);
-        paint.setColor(Color.DKGRAY);
+        paint.setColor(this.color);
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeJoin(Paint.Join.ROUND);
         this.ant = ant;
@@ -33,6 +35,7 @@ public class AntView extends View{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        paint.setColor(color);
         canvas.drawPath(path, paint);
         canvas.drawCircle(width/2, height/2, ant.size, paint);
         this.setLayerType(LAYER_TYPE_SOFTWARE, paint);

@@ -21,7 +21,7 @@ public class GameActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.game_layout);
+        // setContentView(R.layout.game_layout);
         //setContentView(new BackgroundView(this, null));
     }
 
